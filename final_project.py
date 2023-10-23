@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import sqlite3
 
-# класс главного окна
+# Главное окно 
 class Main(tk.Frame):
     def __init__(self, root) -> None:
         super().__init__(root)
@@ -11,41 +11,41 @@ class Main(tk.Frame):
         self.view_records()
 
     def init_main(self):
-        # Панель инструментов
-        toolbar = tk.Frame(bg='#4285b4', bd=2)
+        # Инструменты
+        toolbar = tk.Frame(bg='#7d7d7d', bd=2)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
-        # Создание кнопки добавления сотрудника
+        # Кнопка добавления сотрудника
         self.add_img = tk.PhotoImage(file='./add.png')
-        btn_add = tk.Button(toolbar, bg='#4285b4',bd=0,
+        btn_add = tk.Button(toolbar, bg='#7d7d7d',bd=0,
                             image=self.add_img,
                             command=self.open_dialog)
         btn_add.pack(side=tk.LEFT)
 
         # Создание кнопки изменения сотрудника
         self.edit_img = tk.PhotoImage(file='./update.png')
-        btn_edit = tk.Button(toolbar, bg='#4285b4',bd=0,
+        btn_edit = tk.Button(toolbar, bg='#7d7d7d',bd=0,
                             image=self.edit_img,
                             command=self.open_edit)
         btn_edit.pack(side=tk.LEFT)
 
         # Создание кнопки удаления сотрудника
         self.del_img = tk.PhotoImage(file='./delete.png')
-        btn_del = tk.Button(toolbar, bg='#4285b4',bd=0,
+        btn_del = tk.Button(toolbar, bg='#7d7d7d',bd=0,
                             image=self.del_img,
                             command=self.delete_records)
         btn_del.pack(side=tk.LEFT)
 
         # Создание кнопки поиска сотрудника
         self.search_img = tk.PhotoImage(file='./search.png')
-        btn_search = tk.Button(toolbar, bg='#4285b4',bd=0,
+        btn_search = tk.Button(toolbar, bg='#7d7d7d',bd=0,
                             image=self.search_img,
                             command=self.open_search)
         btn_search.pack(side=tk.LEFT)
 
         # Создание кнопки обновления таблицы
         self.refresh_img = tk.PhotoImage(file='./refresh.png')
-        btn_refresh = tk.Button(toolbar, bg='#4285b4',bd=0,
+        btn_refresh = tk.Button(toolbar, bg='#7d7d7d',bd=0,
                             image=self.refresh_img,
                             command=self.view_records)
         btn_refresh.pack(side=tk.LEFT)
@@ -56,7 +56,7 @@ class Main(tk.Frame):
                                   height= 45,
                                   show='headings')
         
-        # Добавляем параметры столбца
+        # Добавление параметров столбца
         self.tree.column('id', width=45, anchor=tk.CENTER)
         self.tree.column('name', width=225, anchor=tk.CENTER)
         self.tree.column('tel', width=125, anchor=tk.CENTER)
@@ -92,11 +92,11 @@ class Main(tk.Frame):
 
     # Метод удаления записей
     def delete_records(self):
-        # проходим циклом по всем выделенным строкам в таблице
+        # Проходим циклом по всем выделенным строкам в таблице
         for i in self.tree.selection():
-            # Возьмём id каждой строки
+            # Берем id каждой строки
             id = self.tree.set(i, '#1')
-            # Удаляем по id
+            #Удаляем по id
             self.db.cur.execute('''
                 DELETE FROM staff
                 WHERE id = ?
@@ -136,13 +136,13 @@ class Child(tk.Toplevel):
         self.view = app
 
     def init_child(self):
-        self.title('Добавить сотрудника')
+        self.title('Добавление сотрудника')
         self.geometry('400x200')
         # Запрет на изменение размеров
         self.resizable(False, False)
         # Перехватаваем все события приложения
         self.grab_set()
-        # захватываем фокус
+        # Захватываем фокус
         self.focus_set()
 
         # Создание формы
@@ -185,7 +185,7 @@ class Update(Child):
 
     def init_edit(self):
         self.title('Редактирование информации о сотруднике')
-        # Удалить кнопку добавления
+        # убрать кнопку добавления
         self.btn_ok.destroy()
 
         # Кнопка отредактировать
@@ -199,7 +199,7 @@ class Update(Child):
         self.btn_ok.bind('<Button-1>', lambda ev: self.destroy(), add='+')
         self.btn_ok.place(x=300, y=160)
 
-    # метод автозаполнения формы старыми данными
+    # Автозаполнение формы старыми данными
     def load_data(self):
         self.db.cur.execute('''SELECT * FROM staff WHERE id = ?''',
                     self.view.tree.set(self.view.tree.selection()[0], '#1'))
@@ -241,7 +241,7 @@ class Search(tk.Toplevel):
         btn_cancel = tk.Button(self, text='Закрыть', command=self.destroy)
         btn_cancel.place(x=160, y=70)
 
-# класс БД
+# Класс Базы данных 
 class Db:
     def __init__(self):
         self.conn = sqlite3.connect('staff_info.db')
@@ -255,7 +255,7 @@ class Db:
                          salary TEXT
                 )''')
         
-    # Метод добавления в бд
+    # Добавить в бд
     def insert_data(self, name, tel, email, salary):
         self.cur.execute('''
                 INSERT INTO staff (name, phone, email, salary)
@@ -263,7 +263,7 @@ class Db:
         self.conn.commit()
 
 
-# Действия при запуске программы
+# Действия при запуске
 if __name__ == '__main__':
     root = tk.Tk()
     db = Db()
